@@ -43,13 +43,17 @@ with c1:
     st.caption("Most common domain registrars for domains with a Wikidata Entry")
 
 with c2:
-    st.subheader("5% with more than 26k Snapshots")
+    st.subheader("5% had more than 26k Snapshots")
     st.caption("Domains on Wayback")
 
 
 with c3:
-    st.subheader("50% with less than 500 Snapshots")
-    st.caption("Domain on Wikidata")
+    st.subheader("50% had less than 500 Snapshots")
+    st.caption("Domain on Wayback")
+
+st.divider()
+st.text("If you are interested in learning more about domain coverage on Wikidata, checkout our extended abstracted accepted at the 2023 WikiWorkshop Conference!")
+st.link_button("Identifying the Gaps in the Coverage of Web Domains in Wikipedia and Wikidata for Credibility Assessment Purposes", "https://wikiworkshop.org/2023/papers/WikiWorkshop2023_paper_28.pdf")
 
 
 
