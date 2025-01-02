@@ -8,7 +8,7 @@ def get_wayback_df(file):
         data = json.load(file)
 
     # Step 2: Convert the JSON data into a Pandas DataFrame
-    df = pd.DataFrame.from_dict(data, orient='index', columns=['last snapshot date', 'Num_Snapshots'])
+    df = pd.DataFrame.from_dict(data, orient='index', columns=['first snapshot date', 'Num_Snapshots'])
 
     # Step 3: Reset the index to make the website names a column
     df.reset_index(inplace=True)

@@ -1,7 +1,7 @@
 import streamlit as st
 from process_data import get_wayback_df, get_whois_df, get_wikidata_df, combine_dataframes
 from datetime import datetime
-from utils import is_valid_datetime
+from utils import is_valid_datetime, calculate_percentile
 
 st.subheader('Wellesley Cred Lab')
 st.title('Web Credibility Explorer')
@@ -84,3 +84,4 @@ else:
         #             defaultValue="Type here",
         #             variant="outlined",
         #         )
+    # snapshot_percentile = calculate_percentile(combined_df, domain)
