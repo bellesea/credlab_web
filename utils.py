@@ -9,28 +9,28 @@ def is_valid_datetime(date_string, date_format="%Y/%m/%d"):
     except:
         return False  # If an error occurs, it's not a valid datetime string
 
-# def get_similar_websites(df, target_domain):
-#     if "instance of" not in df or 'Num_Snapshots' not in df:
-#         raise KeyError("Required fields 'instance of' or 'Num_Snapshots' are missing.")
-    
-
-def calculate_percentile(df, target_domain):
-
+def get_same_category(df, domain):
     # Ensure relevant columns exist
-    if "instance of" not in df or 'Num_Snapshots' not in df:
-        raise KeyError("Required fields 'instance of' or 'Num_Snapshots' are missing.")
+    if "instance of" not in df:
+        raise KeyError("Required field 'instance of' is missing.")
+    
+    domain_row = df[df['Domain']==domain]
+    
+    # Get the 'instance of' value for the target domain (is a list)
+    target_instances = domain_row['instance of'].values[0]
 
-    # Get the 'instance of' value for the target domain
-    target_instance = df.loc[df["Domain"] == target_domain, "instance of"].iloc[0]
+    filtered_df = df[df["instance of"].isin([target_instances])]
+    return filtered_df, target_instances[0]
 
-    # Filter domains with the same 'instance of'
-    filtered_df = df[df["instance of"] == target_instance]
+def calculate_percentile(df, domain):
+
+    filtered_df = get_same_category(df, domain)
 
     # Get the 'num_snapshots' values
     snapshots = filtered_df['Num_Snapshots'].dropna().astype(float)
 
     # Get the target domain's 'num_snapshots'
-    target_snapshots = df.loc[df["Domain"] == target_domain, 'Num_Snapshots'].values[0]
+    target_snapshots = df.loc[df["Domain"] == domain, 'Num_Snapshots'].values[0]
 
     # Calculate the percentile rank
     percentile = (snapshots < target_snapshots).mean() * 100

@@ -1,7 +1,8 @@
 import streamlit as st
 from process_data import get_wayback_df, get_whois_df, get_wikidata_df, combine_dataframes
 from datetime import datetime
-from utils import is_valid_datetime, calculate_percentile
+from utils import is_valid_datetime, calculate_percentile, get_same_category
+from plots import num_snapshots_histogram
 
 st.subheader('Wellesley Cred Lab')
 st.title('Web Credibility Explorer')
@@ -57,6 +58,16 @@ else:
                 st.subheader(date_obj.strftime("%b %d, %Y"))
             else:
                 st.header(domain_row[column].values[0])
+    
+    # TODO: add safety net
+    st.title("How this domain compares with similar domains")
+
+    st.subheader("domains in similar castegories:")
+    similar_domains_df, instance = get_same_category(combined_df, domain)
+    st.dataframe(similar_domains_df[['Domain']], height=300, width=600)
+
+    st.plotly_chart(num_snapshots_histogram(similar_domains_df, domain, instance))
+    
 
 
     # st.markdown("""
