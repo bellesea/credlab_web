@@ -3,6 +3,9 @@ from process_data import get_wayback_df, get_whois_df, get_wikidata_df, combine_
 from datetime import datetime
 from utils import is_valid_datetime, calculate_percentile, get_same_category
 from plots import num_snapshots_histogram
+import pandas as pd
+
+st.set_page_config(layout="wide")
 
 st.subheader('Wellesley Cred Lab')
 st.title('Web Credibility Explorer')
@@ -66,8 +69,29 @@ else:
     similar_domains_df, instance = get_same_category(combined_df, domain)
     st.dataframe(similar_domains_df[['Domain']], height=300, width=600)
 
-    st.plotly_chart(num_snapshots_histogram(similar_domains_df, domain, instance))
-    
+    c1,c2 = st.columns(2)
+
+    with c1:
+        hist_fig = num_snapshots_histogram(similar_domains_df, domain, instance)
+
+        st.plotly_chart(hist_fig)
+
+
+
+    # click_data = st.plotly_chart(hist_fig, use_container_width=True, key="histogram")
+
+    #     # Get the click data through Streamlit's session state or slider
+    # clicked_bin = st.slider("Select Snapshot Range", min_value=0, max_value=50, step=5)
+
+    # # Handle the bin selection (simulating click)
+    # if clicked_bin is not None:
+    #     # Find the range of domains that fall into this bin
+    #     bins = pd.cut(similar_domains_df['Num_Snapshots'], bins=5)
+    #     domains_in_bin = similar_domains_df[bins == pd.Interval(left=clicked_bin, right=clicked_bin + 5)]['Domain'].tolist()
+
+    #     # Display domains in the sidebar
+    #     st.sidebar.title(f"Domains in Snapshot Range: {clicked_bin} - {clicked_bin + 5}")
+    #     st.sidebar.write(", ".join(domains_in_bin))
 
 
     # st.markdown("""
