@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import streamlit as st
 
 def get_wayback_df(file):
 
@@ -15,18 +16,6 @@ def get_wayback_df(file):
     df.rename(columns={'index': 'Domain'}, inplace=True)
 
     return df
-
-    # # Display the DataFrame
-    # print(df)
-
-    # # Step 4: Perform operations (examples)
-    # # Filter websites with values greater than 10,000
-    # filtered_df = df[df['Value'] > 10000]
-    # print(filtered_df)
-
-    # # Sort the DataFrame by Value
-    # sorted_df = df.sort_values(by='Value', ascending=False)
-    # print(sorted_df)
 
 def get_whois_df(file):
     with open(file, 'r') as file:
@@ -70,5 +59,18 @@ def combine_dataframes(wayback_df, whois_df, wikidata_df):
     merged_df_clean = merged_df.dropna(axis=1, how='all')
 
     return merged_df_clean
+
+@st.cache_data
+def get_combined_df():
+    wayback_df = get_wayback_df('data/WAYBACK.json')
+    whois_df = get_whois_df('data/WHOIS.json')
+    wikidata_df = get_wikidata_df('data/WIKIDATA.json')
+
+    combined_df = combine_dataframes(wayback_df, whois_df, wikidata_df)
+    combined_df['Num_Snapshots'] = pd.to_numeric(combined_df['Num_Snapshots'], errors='coerce')
+    combined_df = combined_df.dropna(subset=['Domain', 'Num_Snapshots'])
+    combined_df = combined_df[combined_df['Domain'].str.strip() != ""]
+
+    return combined_df
 
 

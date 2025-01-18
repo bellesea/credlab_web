@@ -1,5 +1,5 @@
 import streamlit as st
-from process_data import get_wayback_df, get_whois_df, get_wikidata_df, combine_dataframes
+from process_data import get_combined_df
 from datetime import datetime
 from utils import is_valid_datetime, calculate_percentile, get_same_category
 from plots import num_snapshots_histogram
@@ -13,11 +13,7 @@ st.title('Web Credibility Explorer')
 domain = st.text_input("Enter website URL:", "nytimes.com", key="no_auto_cap", help="Input text without capitalization")
 st.text('Note: please enter url without prefix, e.g. nytimes.com')
 
-wayback_df = get_wayback_df('data/WAYBACK.json')
-whois_df = get_whois_df('data/WHOIS.json')
-wikidata_df = get_wikidata_df('data/WIKIDATA.json')
-
-combined_df = combine_dataframes(wayback_df, whois_df, wikidata_df)
+combined_df = get_combined_df()
 
 if domain not in combined_df['Domain'].to_list():
     st.header("Sorry! This domain was not covered by our project.")
@@ -72,7 +68,7 @@ else:
     c1,c2 = st.columns(2)
 
     with c1:
-        hist_fig = num_snapshots_histogram(similar_domains_df, domain, instance)
+        hist_fig = num_snapshots_histogram(similar_domains_df, instance, domain = domain)
 
         st.plotly_chart(hist_fig)
 
