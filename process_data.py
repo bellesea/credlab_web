@@ -10,6 +10,11 @@ def get_wayback_df(file):
 
     # Step 2: Convert the JSON data into a Pandas DataFrame
     df = pd.DataFrame.from_dict(data, orient='index', columns=['first snapshot date', 'Num_Snapshots'])
+    df['Num_Snapshots'] = pd.to_numeric(df['Num_Snapshots'], errors='coerce')
+    df = df.dropna(subset=['Num_Snapshots'])
+    df['Num_Snapshots'] = df['Num_Snapshots'].round(0).astype(int)
+
+
 
     # Step 3: Reset the index to make the website names a column
     df.reset_index(inplace=True)
@@ -65,12 +70,15 @@ def get_combined_df():
     wayback_df = get_wayback_df('data/WAYBACK.json')
     whois_df = get_whois_df('data/WHOIS.json')
     wikidata_df = get_wikidata_df('data/WIKIDATA.json')
+    
 
     combined_df = combine_dataframes(wayback_df, whois_df, wikidata_df)
-    combined_df['Num_Snapshots'] = pd.to_numeric(combined_df['Num_Snapshots'], errors='coerce')
-    combined_df = combined_df.dropna(subset=['Domain', 'Num_Snapshots'])
     combined_df = combined_df[combined_df['Domain'].str.strip() != ""]
 
-    return combined_df
+    combined_df['Num_Snapshots'] = pd.to_numeric(combined_df['Num_Snapshots'], errors='coerce')
+    combined_df = combined_df.dropna(subset=['Num_Snapshots'])
+    combined_df['Num_Snapshots'] = combined_df['Num_Snapshots'].round(0).astype(int)
+
+    return combined_df, wayback_df, wikidata_df, whois_df
 
 

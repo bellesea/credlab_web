@@ -35,3 +35,16 @@ def calculate_percentile(df, domain):
     # Calculate the percentile rank
     percentile = (snapshots < target_snapshots).mean() * 100
     return percentile
+
+def get_stats(df, field):
+      # Compute statistics
+    mean_snapshots = df[field].mean()
+    median_snapshots = df[field].median()
+    std_snapshots = df[field].std()
+    minimum = df[field].min()
+    maximum = df[field].max()
+
+    # Get top 3 domains with the most snapshots
+    top_domains = df.nlargest(3, field)[['Domain', field]]
+
+    return mean_snapshots, median_snapshots, std_snapshots, top_domains, minimum, maximum

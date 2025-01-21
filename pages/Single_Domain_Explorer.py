@@ -13,7 +13,7 @@ st.title('Web Credibility Explorer')
 domain = st.text_input("Enter website URL:", "nytimes.com", key="no_auto_cap", help="Input text without capitalization")
 st.text('Note: please enter url without prefix, e.g. nytimes.com')
 
-combined_df = get_combined_df()
+combined_df,_,_,_ = get_combined_df()
 
 if domain not in combined_df['Domain'].to_list():
     st.header("Sorry! This domain was not covered by our project.")
@@ -59,15 +59,16 @@ else:
                 st.header(domain_row[column].values[0])
     
     # TODO: add safety net
-    st.title("How this domain compares with similar domains")
+    st.subheader("How this domain compares with similar domains")
 
     st.subheader("domains in similar castegories:")
     similar_domains_df, instance = get_same_category(combined_df, domain)
-    st.dataframe(similar_domains_df[['Domain']], height=300, width=600)
-
+    # st.dataframe(similar_domains_df[['Domain']], height=300, width=600)
     c1,c2 = st.columns(2)
 
     with c1:
+        st.dataframe(similar_domains_df[['Domain']], height=300, width=600)
+    with c2:
         hist_fig = num_snapshots_histogram(similar_domains_df, instance, domain = domain)
 
         st.plotly_chart(hist_fig)
