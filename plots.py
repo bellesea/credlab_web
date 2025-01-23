@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 
-@st.cache
+@st.cache_resource
 def num_snapshots_histogram(df,  instance = "", domain = "", nbins=15, log_scale = False):
     if log_scale:
         df['Original_Snapshots'] = df['Num_Snapshots']
@@ -57,7 +57,7 @@ def num_snapshots_histogram(df,  instance = "", domain = "", nbins=15, log_scale
 
     return fig
 
-@st.cache
+@st.cache_resource
 def swarm_plot(df):
     # Create the swarm plot
     fig = px.strip(df, 
@@ -69,7 +69,7 @@ def swarm_plot(df):
               )
     return fig
 
-@st.cache
+@st.cache_resource
 def category_bar(df):
     if "instance of" not in df.columns:
         st.error("The dataset does not contain an 'instance of' column.")
@@ -109,7 +109,7 @@ def category_bar(df):
 
     return fig
 
-@st.cache
+@st.cache_resource
 def date_bar(df):
     df['registration date'] = pd.to_datetime(df['registration date'], errors='coerce', format="%Y/%m/%d")
     

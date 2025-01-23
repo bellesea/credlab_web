@@ -2,7 +2,7 @@ import pandas as pd
 import json
 import streamlit as st
 
-@st.cache
+@st.cache_resource
 def get_wayback_df(file):
 
     # Step 1: Load the JSON data
@@ -23,7 +23,7 @@ def get_wayback_df(file):
 
     return df
 
-@st.cache
+@st.cache_resource
 def get_whois_df(file):
     with open(file, 'r') as file:
         data = json.load(file)  # Load the JSON structure
@@ -36,7 +36,7 @@ def get_whois_df(file):
     df.rename(columns={'index': 'Domain'}, inplace=True)
     return df
 
-@st.cache
+@st.cache_resource
 def get_wikidata_df(file):
     # Step 1: Load the JSON data
     with open(file, 'r') as file:
@@ -58,7 +58,7 @@ def get_wikidata_df(file):
     # # Save to CSV if needed
     # final_df.to_csv("processed_data.csv", index=False)
 
-@st.cache
+@st.cache_resource
 def combine_dataframes(wayback_df, whois_df, wikidata_df):
     # Merge the DataFrames on the 'Domain' column
     merged_df = pd.merge(wayback_df, whois_df, on='Domain', how='outer')
@@ -69,7 +69,7 @@ def combine_dataframes(wayback_df, whois_df, wikidata_df):
 
     return merged_df_clean
 
-@st.cache_data
+@st.cache_resource_data
 def get_combined_df():
     wayback_df = get_wayback_df('data/WAYBACK.json')
     whois_df = get_whois_df('data/WHOIS.json')
