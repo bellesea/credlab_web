@@ -3,26 +3,24 @@ from process_data import get_combined_df
 from plots import num_snapshots_histogram, category_bar, date_bar
 from utils import get_stats
 
-
-
 st.set_page_config(layout="wide", initial_sidebar_state='collapsed')
 
-# st.markdown("""
-# <style>
-# [data-testid="stMetric"] {
-#     background-color: #9FBA9B;
-#     text-align: center;
-#     padding: 25px 0;
-# }
-# [data-testid="stMetricLabel"] {
-#   display: flex;
-#   justify-content: center;
-#   align-items: center;
-# }
-# </style>
-# """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+[data-testid="stMetric"] {
+    background-color: #9FBA9B;
+    text-align: center;
+    padding: 25px 0;
+}
+[data-testid="stMetricLabel"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+""", unsafe_allow_html=True)
 
-# col = st.columns((5.5, 4.5), gap='medium')
+col = st.columns((5.5, 4.5), gap='medium')
 # with col[0]:
 #     st.title("Total: 14,330 Domains")
 #     # st.metric("Domains covered", 14330)
