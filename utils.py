@@ -1,5 +1,7 @@
 from datetime import datetime
+import streamlit as st
 
+@st.cache
 def is_valid_datetime(date_string, date_format="%Y/%m/%d"):
     try:
         # Try to parse the date string with the provided format
@@ -8,7 +10,8 @@ def is_valid_datetime(date_string, date_format="%Y/%m/%d"):
         return True  # If parsing is successful, return True
     except:
         return False  # If an error occurs, it's not a valid datetime string
-
+    
+@st.cache
 def get_same_category(df, domain):
     # Ensure relevant columns exist
     if "instance of" not in df:
@@ -22,6 +25,7 @@ def get_same_category(df, domain):
     filtered_df = df[df["instance of"].isin([target_instances])]
     return filtered_df, target_instances[0]
 
+@st.cache
 def calculate_percentile(df, domain):
 
     filtered_df = get_same_category(df, domain)
@@ -36,6 +40,7 @@ def calculate_percentile(df, domain):
     percentile = (snapshots < target_snapshots).mean() * 100
     return percentile
 
+@st.cache
 def get_stats(df, field):
       # Compute statistics
     mean_snapshots = df[field].mean()
